@@ -8,7 +8,7 @@
 <link rel="icon" href="img/icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="css/estilos.css?v=2">
 <script>/* pide la letra de inmediato (también para generar PDF) */
 if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
 </head>
@@ -16,7 +16,7 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
 <header class="top no-print"><div class="wrap">
   <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
   <nav class="nav"><a href="index.html">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="sopas.html">Sopas de letras</a><a href="loteria.html">Lotería</a><a href="catalogo.html" class="on">Catálogo 3D</a><a href="index.html#armar">Cómo armar</a></nav>
-  <button class="btn sm" onclick="window.print()">🖨️ Imprimir / guardar PDF</button>
+  <button class="btn sm" onclick="window.print()">🖨️ Imprimir</button>
 </div></header>
 <main id="paginas"></main>
 
@@ -53,7 +53,12 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
         </div></article>`;
     }).join('') + `<span class="folio">${i / 2 + 2}</span></section>`;
   }
-  document.getElementById('paginas').innerHTML = html;
+  const cont = document.getElementById('paginas');
+  cont.innerHTML = html;
+  // en celular, las páginas carta se reducen para caber en la pantalla (al imprimir vuelven a tamaño real)
+  // se usa el ancho de la pantalla del teléfono, porque el navegador agranda la ventana si algo no cabe
+  const ajustar = () => { const w = Math.min(innerWidth, screen.width || innerWidth); const k = (w - 16) / 816.4; cont.style.zoom = k < 1 ? k.toFixed(3) : ''; };
+  addEventListener('resize', ajustar); ajustar();
   document.documentElement.dataset.listo = '1';
 })();
 </script>

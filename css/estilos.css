@@ -131,12 +131,42 @@ select,input[type=number]{font:inherit; padding:8px 10px; border-radius:10px; bo
   .hero .wrap,.visor{grid-template-columns:1fr}
   .escena{min-height:440px}
   .lomo-btn{width:30px; height:130px}
+  /* menú en una sola fila que se desliza de lado */
+  .top .wrap{min-height:0; padding-top:8px; gap:4px}
+  .nav{margin:0 -16px; padding:0 12px 8px; width:calc(100% + 32px); flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{white-space:nowrap; padding:6px 11px; font-size:.95rem; background:#F6EEE2}
+  .nav a.on{background:var(--ink); color:#fff}
+  .nav{order:3}
+  .top .btn{margin-left:auto; padding:6px 12px; font-size:.85rem}
 }
+@media (max-width:560px){
+  .hero{padding:24px 0 10px}
+  .hero .libros3d{order:-1; max-width:330px; margin:0 auto}
+  .card{padding:16px}
+  .seccion{padding:24px 0}
+  .btn{white-space:normal; text-align:center; justify-content:center}
+  .hero .acciones .btn,.panel-imp .btn{width:100%}
+  .escena{min-height:400px}
+  .libro{transform-origin:center; scale:.86}
+  .info h1{font-size:1.9rem}
+  .navlibros .btn{font-size:.85rem; padding:7px 10px}
+  .repisa{padding:8px 8px 0}
+  .fila{gap:3px 1px}
+  .lomo-btn{width:27px; height:117px}
+  .lomo-btn:hover,.lomo-btn:focus-visible{transform:translateY(-6px)}
+  .barra .buscar{max-width:none}
+  .hojas{gap:14px; padding:14px 0 40px}
+  table{font-size:.88rem}
+}
+select{max-width:100%}
+.escena{touch-action:pan-y}
 @page{size:letter portrait; margin:0}
 @media print{
   body{background:#fff}
   .no-print,.top,.pie{display:none !important}
   .pagina{margin:0; box-shadow:none; page-break-after:always; break-after:page}
+  #paginas{zoom:1 !important}
   .hojas{display:block; padding:0}
   .hojas svg.hoja{width:215.9mm; height:279.4mm; box-shadow:none; page-break-after:always; break-after:page}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
