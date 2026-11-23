@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imprimir · Biblioteca Bíblica 3D</title>
+<meta name="description" content="Imprime gratis las piezas de los 66 libros de la Biblia en hojas tamaño carta, listas para recortar y pegar en madera.">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<script>/* pide la letra de inmediato (también para generar PDF) */
+if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
+  <nav class="nav"><a href="index.html">Biblioteca</a><a href="imprimir.html" class="on">Imprimir</a><a href="catalogo.html">Catálogo 3D</a><a href="index.html#armar">Cómo armar</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="card no-print" style="margin-top:22px">
+    <h1 style="font-size:2rem">Imprimir las piezas</h1>
+    <p class="muted">Elige qué quieres imprimir. Todo es gratuito. Las hojas son tamaño <b>carta</b> y las piezas salen en <b>tamaño real</b> para bloques de madera de 10 × 13 × 3 cm.</p>
+    <div class="panel-imp">
+      <div>
+        <h3>1. Tipo de hojas</h3>
+        <label class="opcion"><input type="radio" name="modo" value="ahorro" checked><span><b>Juego completo, ahorrando papel</b><br><small>Portada, contraportada, lomo, canto y tapa. 66 libros = 50 hojas.</small></span></label>
+        <label class="opcion" style="margin-top:8px"><input type="radio" name="modo" value="basico"><span><b>Solo portada, contraportada y lomo</b><br><small>El canto y la tapa se pintan. 66 libros = 39 hojas.</small></span></label>
+        <label class="opcion" style="margin-top:8px"><input type="radio" name="modo" value="kit"><span><b>Un libro por hoja</b><br><small>Cada hoja trae todas las piezas de un libro y sus instrucciones.</small></span></label>
+      </div>
+      <div>
+        <h3>2. ¿Qué libros?</h3>
+        <select id="alcance" style="width:100%"></select>
+        <div id="rango" style="display:none;margin-top:10px;gap:8px;align-items:center">
+          Del <input type="number" id="desde" min="1" max="66" value="1" style="width:76px"> al <input type="number" id="hasta" min="1" max="66" value="66" style="width:76px">
+        </div>
+        <label style="display:flex;gap:8px;align-items:center;margin-top:12px"><input type="checkbox" id="instr" checked> Incluir hoja de instrucciones al inicio</label>
+      </div>
+      <div>
+        <h3>3. Imprimir</h3>
+        <p class="resumen" id="resumen">—</p>
+        <button class="btn" onclick="window.print()">🖨️ Imprimir estas hojas</button>
+        <p style="margin-top:10px"><a class="btn sec sm" href="descargas/biblioteca-biblica-3d-hojas.pdf" download>⬇ PDF con las 50 hojas</a></p>
+      </div>
+    </div>
+    <p class="aviso" style="margin-top:16px">Al imprimir elige: tamaño <b>Carta</b>, escala <b>100 % / Tamaño real</b> (no “Ajustar”), márgenes <b>Ninguno</b> y activa <b>Gráficos de fondo</b>. Cada hoja de instrucciones trae una regla de 5 cm para comprobar la escala. Para pegar sobre madera conviene <b>papel bond de 90–120 g</b> o <b>papel adhesivo imprimible</b>.</p>
+  </section>
+  <div class="hojas" id="hojas"></div>
+</main>
+
+<script src="js/arte.js"></script>
+<script src="js/piezas.js"></script>
+<script src="js/libros-at.js"></script>
+<script src="js/libros-nt.js"></script>
+<script src="js/vistas.js"></script>
+<script>
+(function () {
+  const B = Biblioteca, V = Vistas;
+  B.montarDefs();
+  const todos = B.LIBROS.slice().sort((a, b) => a.n - b.n);
+  const sel = document.getElementById('alcance');
+  sel.innerHTML = `<option value="todos">Los 66 libros</option><option value="at">Antiguo Testamento (39)</option><option value="nt">Nuevo Testamento (27)</option>` +
+    `<optgroup label="Por sección">${B.ORDEN.map(id => `<option value="sec:${id}">${B.GRUPOS[id].nombre} (${todos.filter(b => b.g === id).length})</option>`).join('')}</optgroup>` +
+    `<optgroup label="Un libro">${todos.map(b => `<option value="libro:${b.n}">${b.n}. ${b.nombre}</option>`).join('')}</optgroup>` +
+    `<option value="rango">Del libro… al libro…</option>`;
+
+  const q = new URLSearchParams(location.search);
+  if (q.get('modo')) document.querySelector(`input[name=modo][value=${q.get('modo')}]`).checked = true;
+  if (q.get('alcance')) sel.value = q.get('alcance');
+  if (q.get('instrucciones') === '0') document.getElementById('instr').checked = false;
+  if (q.get('desde')) document.getElementById('desde').value = q.get('desde');
+  if (q.get('hasta')) document.getElementById('hasta').value = q.get('hasta');
+
+  function libros() {
+    const v = sel.value;
+    if (v === 'at') return todos.filter(b => b.n <= 39);
+    if (v === 'nt') return todos.filter(b => b.n > 39);
+    if (v.startsWith('sec:')) return todos.filter(b => b.g === v.slice(4));
+    if (v.startsWith('libro:')) return todos.filter(b => b.n === +v.slice(6));
+    if (v === 'rango') {
+      let a = +document.getElementById('desde').value || 1, z = +document.getElementById('hasta').value || 66;
+      if (a > z) [a, z] = [z, a];
+      return todos.filter(b => b.n >= a && b.n <= z);
+    }
+    return todos;
+  }
+  function dibujar() {
+    const modo = document.querySelector('input[name=modo]:checked').value;
+    document.getElementById('rango').style.display = sel.value === 'rango' ? 'flex' : 'none';
+    const ls = libros();
+    const plan = V.plan(ls, modo, document.getElementById('instr').checked);
+    document.getElementById('resumen').textContent = `${ls.length} ${ls.length === 1 ? 'libro' : 'libros'} → ${plan.length} ${plan.length === 1 ? 'hoja' : 'hojas'} carta`;
+    document.getElementById('hojas').innerHTML = plan.map((h, i) => V.render(h, i, plan.length)).join('');
+    document.documentElement.dataset.listo = '1';
+  }
+  document.querySelectorAll('input,select').forEach(el => el.addEventListener('change', dibujar));
+  dibujar();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo 3D · Biblioteca Bíblica 3D</title>
+<meta name="description" content="Los 66 libros de la Biblia en 3D: portada, contraportada, cita (RVR1960) y dato curioso de cada libro.">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<script>/* pide la letra de inmediato (también para generar PDF) */
+if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
+</head>
+<body>
+<header class="top no-print"><div class="wrap">
+  <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
+  <nav class="nav"><a href="index.html">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="catalogo.html" class="on">Catálogo 3D</a><a href="index.html#armar">Cómo armar</a></nav>
+  <button class="btn sm" onclick="window.print()">🖨️ Imprimir / guardar PDF</button>
+</div></header>
+<main id="paginas"></main>
+
+<script src="js/arte.js"></script>
+<script src="js/piezas.js"></script>
+<script src="js/libros-at.js"></script>
+<script src="js/libros-nt.js"></script>
+<script src="js/vistas.js"></script>
+<script>
+(function () {
+  const B = Biblioteca, V = Vistas, esc = B.esc;
+  B.montarDefs();
+  const libros = B.LIBROS.slice().sort((a, b) => a.n - b.n);
+  let html = `<section class="pagina portada-cat">
+      <p style="letter-spacing:.2em;font-family:Fredoka;font-weight:600">CATÁLOGO 3D</p>
+      <h1>Biblioteca Bíblica 3D</h1>
+      <p>Los 66 libros de la Biblia para armar · Ministerio infantil</p>
+      <div style="display:flex;gap:4mm;margin-top:10mm;align-items:flex-end">${V.svg3D(B.porNumero(1), 'frente', '').replace('<svg', '<svg style="width:52mm"')}${V.svg3D(B.porNumero(27), 'frente', '').replace('<svg', '<svg style="width:60mm"')}${V.svg3D(B.porNumero(43), 'frente', '').replace('<svg', '<svg style="width:52mm"')}</div>
+      <div class="cat-repisa">${libros.map(b => B.svg('lomo', b)).join('')}</div>
+      <p style="font-size:10pt;margin-top:8mm">Citas bíblicas: Reina-Valera 1960</p>
+    </section>`;
+  for (let i = 0; i < libros.length; i += 2) {
+    html += `<section class="pagina">` + libros.slice(i, i + 2).map(b => {
+      const G = B.GRUPOS[b.g];
+      return `<article class="cat-libro">
+        <div class="vistas">${V.svg3D(b, 'frente')}${V.svg3D(b, 'atras')}</div>
+        <div class="txt">
+          <span class="num" style="background:${G.base}">Libro ${b.n} de 66</span>
+          <h2 style="color:${G.osc}">${esc(b.nombre)}</h2>
+          <p class="sec">${G.t === 'AT' ? 'Antiguo' : 'Nuevo'} Testamento · ${esc(G.nombre)} · ${b.cap} ${b.cap === 1 ? 'capítulo' : 'capítulos'}</p>
+          <blockquote>“${esc(b.cita)}”<cite>${esc(b.ref.toUpperCase())} · RVR1960</cite></blockquote>
+          <p class="k" style="color:${G.osc}">Isotipo</p><p>${esc(b.iso)}</p>
+          <p class="k" style="color:${G.osc}">¿Sabías que…?</p><p>${esc(b.dato)}</p>
+        </div></article>`;
+    }).join('') + `<span class="folio">${i / 2 + 2}</span></section>`;
+  }
+  document.getElementById('paginas').innerHTML = html;
+  document.documentElement.dataset.listo = '1';
+})();
+</script>
+</body>
+</html>

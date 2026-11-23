@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biblioteca Bíblica 3D · 66 libros para armar</title>
+<meta name="description" content="Recursos gratuitos para el ministerio infantil: los 66 libros de la Biblia en 3D, con cita (RVR1960) y dato curioso, listos para imprimir y pegar sobre madera.">
+<meta property="og:title" content="Biblioteca Bíblica 3D">
+<meta property="og:description" content="Los 66 libros de la Biblia para armar en 3D. Gratis para el ministerio infantil.">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<script>/* pide la letra de inmediato (también para generar PDF) */
+if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
+  <nav class="nav"><a href="index.html" class="on">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="catalogo.html">Catálogo 3D</a><a href="#armar">Cómo armar</a></nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="fred" style="color:var(--accent);letter-spacing:.12em;font-weight:600;margin:0 0 6px">RECURSO GRATUITO · MINISTERIO INFANTIL</p>
+    <h1>Los 66 libros de la Biblia, para armar en 3D</h1>
+    <p class="lead">Cada libro tiene su propio dibujo, una cita de la Biblia (Reina-Valera 1960) y un dato curioso para los niños. Míralos en 3D, imprímelos en hojas carta y pégalos sobre bloques de madera para formar tu propia biblioteca.</p>
+    <div class="acciones">
+      <a class="btn" href="#librero">📚 Ver la biblioteca</a>
+      <a class="btn wood" href="imprimir.html">🖨️ Imprimir todo</a>
+      <a class="btn sec" href="descargas/biblioteca-biblica-3d-hojas.pdf" download>⬇ Descargar PDF</a>
+    </div>
+  </div>
+  <div class="libros3d" id="heroLibros" aria-hidden="true"></div>
+</div></section>
+
+<section class="seccion" id="librero" style="padding-top:10px"><div class="wrap">
+  <div class="barra">
+    <h2 style="margin:0">La biblioteca</h2>
+    <input class="buscar" id="buscar" type="search" placeholder="Buscar un libro…" aria-label="Buscar un libro">
+  </div>
+  <p class="muted" style="margin:4px 0 8px">Toca un libro para verlo en 3D, leer su cita y su dato curioso, o imprimirlo.</p>
+  <div class="chips" id="chips"></div>
+  <div class="librero" id="estantes"></div>
+</div></section>
+
+<section class="seccion" id="armar"><div class="wrap">
+  <h2>Cómo armar tu biblioteca</h2>
+  <div class="grid g2" style="align-items:start">
+    <div class="card">
+      <h3>Materiales</h3>
+      <ul>
+        <li><b>66 bloques de madera</b> de 10 × 13 × 3 cm (MDF o pino). Uno por libro.</li>
+        <li>Las hojas impresas al <b>100 % (tamaño real)</b> en <b>bond de 90–120 g</b> o <b>papel adhesivo imprimible</b>.</li>
+        <li>Tijeras o cúter con regla, <b>cola blanca</b>, lija fina y una tarjeta para alisar.</li>
+        <li>Opcional: barniz al agua para proteger.</li>
+      </ul>
+      <h3>¿Cuántas hojas?</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem">
+        <tr><td style="padding:6px 0;border-bottom:1px solid var(--line)">Juego completo (portada, contraportada, lomo, canto y tapa)</td><td style="text-align:right;border-bottom:1px solid var(--line)"><b>50 hojas</b></td></tr>
+        <tr><td style="padding:6px 0;border-bottom:1px solid var(--line)">Solo portada, contraportada y lomo</td><td style="text-align:right;border-bottom:1px solid var(--line)"><b>39 hojas</b></td></tr>
+        <tr><td style="padding:6px 0">Un libro por hoja (con instrucciones)</td><td style="text-align:right"><b>1 hoja c/u</b></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Paso a paso</h3>
+      <div class="grid" style="gap:12px">
+        <div class="paso"><b class="n">1</b><div><b>Imprime</b> en tamaño carta, escala 100 %, sin márgenes y con “gráficos de fondo”.</div></div>
+        <div class="paso"><b class="n">2</b><div><b>Recorta</b> cada pieza por la línea punteada. La pestaña gris solo dice qué pieza es (A, B, C, D o E) y se recorta.</div></div>
+        <div class="paso"><b class="n">3</b><div><b>Pega</b> con cola blanca en capa delgada: <b>A</b> portada al frente, <b>B</b> contraportada atrás, <b>C</b> lomo a la izquierda, <b>D</b> canto a la derecha y <b>E</b> tapa arriba.</div></div>
+        <div class="paso"><b class="n">4</b><div><b>Alisa</b> con una tarjeta del centro a las orillas, deja secar y, si quieres, barniza.</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer class="pie"><div class="wrap">
+  <p><b>Biblioteca Bíblica 3D</b> · Recurso gratuito para apoyar al ministerio infantil. Puedes imprimirlo, compartirlo y usarlo en tu iglesia sin costo; no está permitido venderlo.</p>
+  <p>Las citas bíblicas son de la versión Reina-Valera © 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas. Utilizado con permiso.</p>
+</div></footer>
+
+<script src="js/arte.js"></script>
+<script src="js/piezas.js"></script>
+<script src="js/libros-at.js"></script>
+<script src="js/libros-nt.js"></script>
+<script src="js/vistas.js"></script>
+<script>
+(function () {
+  const B = Biblioteca, V = Vistas, esc = B.esc;
+  B.montarDefs();
+  const todos = B.LIBROS.slice().sort((a, b) => a.n - b.n);
+  document.getElementById('heroLibros').innerHTML = [1, 27, 43].map(n => V.svg3D(B.porNumero(n), 'frente')).join('');
+
+  let filtro = 'todos', texto = '';
+  const quitar = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const chips = document.getElementById('chips');
+  chips.innerHTML = `<button class="chip on" data-g="todos">Todos</button>` +
+    B.ORDEN.map(id => `<button class="chip" data-g="${id}"><i style="background:${B.GRUPOS[id].base}"></i>${B.GRUPOS[id].nombre}</button>`).join('');
+  chips.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    filtro = c.dataset.g; chips.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c)); dibujar();
+  });
+  document.getElementById('buscar').addEventListener('input', e => { texto = quitar(e.target.value.trim()); dibujar(); });
+
+  function dibujar() {
+    const html = B.ORDEN.filter(id => filtro === 'todos' || filtro === id).map(id => {
+      const G = B.GRUPOS[id];
+      const ls = todos.filter(b => b.g === id && (!texto || quitar(b.nombre).includes(texto)));
+      if (!ls.length) return '';
+      return `<div class="repisa"><h3 style="background:${G.osc}">${G.t} · ${esc(G.nombre)}</h3><div class="fila">` +
+        ls.map(b => `<a class="lomo-btn" href="libro.html?n=${b.n}" aria-label="${esc(b.nombre)}"><span class="tip">${b.n}. ${esc(b.nombre)}</span>${B.svg('lomo', b)}</a>`).join('') +
+        `</div></div>`;
+    }).join('');
+    document.getElementById('estantes').innerHTML = html || '<p style="color:#fff;padding:20px">No encontramos ese libro.</p>';
+  }
+  dibujar();
+})();
+</script>
+</body>
+</html>

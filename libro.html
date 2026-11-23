@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Libro · Biblioteca Bíblica 3D</title>
+<meta name="description" content="Mira cada libro de la Biblia en 3D, con su cita (RVR1960) y un dato curioso para niños.">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<script>/* pide la letra de inmediato (también para generar PDF) */
+if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
+  <nav class="nav"><a href="index.html">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="catalogo.html">Catálogo 3D</a><a href="index.html#armar">Cómo armar</a></nav>
+</div></header>
+
+<main class="wrap">
+  <div class="visor">
+    <div>
+      <div class="escena" id="escena">
+        <span class="ayuda">Arrastra para girar el libro</span>
+        <div class="piso"></div>
+        <div class="persp"><div class="libro" id="libro"></div></div>
+      </div>
+      <div class="controles">
+        <button class="btn sm sec" data-vista="frente">Portada</button>
+        <button class="btn sm sec" data-vista="lomo">Lomo</button>
+        <button class="btn sm sec" data-vista="atras">Contraportada</button>
+        <button class="btn sm sec" id="girar">▶ Girar solo</button>
+      </div>
+    </div>
+    <div class="info" id="info"></div>
+  </div>
+  <div class="navlibros" id="nav"></div>
+  <div class="miniatura" id="mini" aria-label="Todos los libros"></div>
+</main>
+
+<footer class="pie"><div class="wrap">
+  <p>Citas bíblicas: Reina-Valera © 1960 Sociedades Bíblicas en América Latina; © renovado 1988 Sociedades Bíblicas Unidas. Utilizado con permiso.</p>
+</div></footer>
+
+<script src="js/arte.js"></script>
+<script src="js/piezas.js"></script>
+<script src="js/libros-at.js"></script>
+<script src="js/libros-nt.js"></script>
+<script src="js/vistas.js"></script>
+<script>
+(function () {
+  const B = Biblioteca, esc = B.esc;
+  B.montarDefs();
+  const n = Math.min(66, Math.max(1, parseInt(new URLSearchParams(location.search).get('n'), 10) || 1));
+  const b = B.porNumero(n), G = B.GRUPOS[b.g];
+  document.title = `${b.nombre} · Biblioteca Bíblica 3D`;
+
+  document.getElementById('libro').innerHTML =
+    `<div class="c-bottom"></div>` +
+    `<div class="c-back">${B.svg('contra', b)}</div>` +
+    `<div class="c-edge">${B.svg('canto', b)}</div>` +
+    `<div class="c-top">${B.svg('tapa', b)}</div>` +
+    `<div class="c-spine">${B.svg('lomo', b)}</div>` +
+    `<div class="c-front">${B.svg('portada', b)}</div>`;
+
+  document.getElementById('info').innerHTML = `
+    <span class="grupo" style="background:${G.base}">${G.t === 'AT' ? 'Antiguo' : 'Nuevo'} Testamento · ${esc(G.nombre)}</span>
+    <h1 style="color:${G.osc};margin-top:10px">${esc(b.nombre)}</h1>
+    <p class="muted">Libro ${b.n} de 66 · ${b.cap} ${b.cap === 1 ? 'capítulo' : 'capítulos'}</p>
+    <blockquote>“${esc(b.cita)}”<cite>${esc(b.ref.toUpperCase())} · RVR1960</cite></blockquote>
+    <div class="dato"><b class="fred">💡 ¿Sabías que…?</b><br>${esc(b.dato)}</div>
+    <h3 style="margin-top:18px">El dibujo</h3>
+    <p>${esc(b.iso)}</p>
+    <p style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+      <a class="btn" href="imprimir.html?modo=kit&alcance=libro:${b.n}">🖨️ Imprimir este libro</a>
+      <a class="btn sec" href="imprimir.html?alcance=sec:${b.g}">Imprimir la sección</a>
+    </p>`;
+
+  const prev = B.porNumero(n - 1), next = B.porNumero(n + 1);
+  document.getElementById('nav').innerHTML =
+    (prev ? `<a class="btn sec sm" href="libro.html?n=${prev.n}">← ${esc(prev.nombre)}</a>` : '<span></span>') +
+    `<a class="btn sec sm" href="index.html#librero">📚 Biblioteca</a>` +
+    (next ? `<a class="btn sec sm" href="libro.html?n=${next.n}">${esc(next.nombre)} →</a>` : '<span></span>');
+  const mini = document.getElementById('mini');
+  mini.innerHTML = B.LIBROS.slice().sort((a, c) => a.n - c.n).map(x => `<a href="libro.html?n=${x.n}" title="${esc(x.nombre)}"${x.n === n ? ' class="on"' : ''}>${B.svg('lomo', x)}</a>`).join('');
+  const on = mini.querySelector('.on'); if (on) mini.scrollLeft = on.offsetLeft - mini.clientWidth / 2;
+
+  // ----- rotación con el dedo o el mouse -----
+  const libro = document.getElementById('libro'), escena = document.getElementById('escena');
+  let ry = 28, rx = -12, auto = false, arr = null, anim = null;
+  const pintar = () => { libro.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`; };
+  function ir(destino) {
+    auto = false; document.getElementById('girar').textContent = '▶ Girar solo';
+    const ini = ry, fin = ini + ((((destino - ini) % 360) + 540) % 360 - 180), t0 = performance.now();
+    cancelAnimationFrame(anim);
+    const paso = t => { const k = Math.min(1, (t - t0) / 600), e = 1 - Math.pow(1 - k, 3); ry = ini + (fin - ini) * e; rx = rx + (-12 - rx) * e; pintar(); if (k < 1) anim = requestAnimationFrame(paso); };
+    anim = requestAnimationFrame(paso);
+  }
+  escena.addEventListener('pointerdown', e => { arr = { x: e.clientX, y: e.clientY, ry, rx }; auto = false; escena.setPointerCapture(e.pointerId); });
+  escena.addEventListener('pointermove', e => {
+    if (!arr) return;
+    ry = arr.ry + (e.clientX - arr.x) * .5; rx = Math.max(-40, Math.min(30, arr.rx - (e.clientY - arr.y) * .3)); pintar();
+  });
+  const soltar = () => { arr = null; };
+  escena.addEventListener('pointerup', soltar); escena.addEventListener('pointercancel', soltar);
+  document.querySelectorAll('[data-vista]').forEach(btn => btn.addEventListener('click', () => ir({ frente: 28, lomo: 80, atras: 205 }[btn.dataset.vista])));
+  document.getElementById('girar').addEventListener('click', e => {
+    auto = !auto; e.target.textContent = auto ? '⏸ Detener' : '▶ Girar solo';
+    if (auto) { let t = performance.now(); const vuelta = now => { if (!auto) return; ry += (now - t) * .03; t = now; pintar(); requestAnimationFrame(vuelta); }; requestAnimationFrame(vuelta); }
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>
