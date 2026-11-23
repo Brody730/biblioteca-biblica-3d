@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sopas de letras · Biblioteca Bíblica 3D</title>
+<meta name="description" content="6 sopas de letras con los 66 libros de la Biblia (11 libros consecutivos en cada una) y sus respuestas, listas para imprimir.">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<script>/* pide la letra de inmediato (también para generar PDF) */
+if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
+  <nav class="nav"><a href="index.html">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="sopas.html" class="on">Sopas de letras</a><a href="loteria.html">Lotería</a><a href="catalogo.html">Catálogo 3D</a><a href="index.html#armar">Cómo armar</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="card no-print" style="margin-top:22px">
+    <h1 style="font-size:2rem">Sopas de letras de los 66 libros</h1>
+    <p class="muted">6 sopas de letras con 11 libros seguidos en cada una, y una hoja de respuestas para cada sopa. Hojas tamaño carta.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+      <select id="ver">
+        <option value="todo">Las 6 sopas y luego las 6 respuestas (12 hojas)</option>
+        <option value="sopas">Solo las 6 sopas</option>
+        <option value="resp">Solo las 6 respuestas</option>
+        <option value="1">Sopa 1 y su respuesta</option><option value="2">Sopa 2 y su respuesta</option><option value="3">Sopa 3 y su respuesta</option>
+        <option value="4">Sopa 4 y su respuesta</option><option value="5">Sopa 5 y su respuesta</option><option value="6">Sopa 6 y su respuesta</option>
+      </select>
+      <button class="btn" onclick="window.print()">🖨️ Imprimir</button>
+      <a class="btn sec" href="descargas/sopas-de-letras-66-libros.pdf" download>⬇ PDF (12 hojas)</a>
+    </div>
+    <p class="aviso" style="margin-top:14px">Imprime en tamaño <b>Carta</b>, escala <b>100 %</b>, márgenes <b>Ninguno</b> y con <b>Gráficos de fondo</b> activado.</p>
+  </section>
+  <div class="hojas" id="hojas"></div>
+</main>
+
+<script src="js/arte.js"></script>
+<script src="js/piezas.js"></script>
+<script src="js/libros-at.js"></script>
+<script src="js/libros-nt.js"></script>
+<script src="js/vistas.js"></script>
+<script src="js/sopas.js"></script>
+<script>
+(function () {
+  const S = Sopas, B = Biblioteca;
+  const sopas = S.todas();
+  // las hojas se dibujan antes de montar los degradados para que todos queden registrados
+  const hSopa = sopas.map(x => S.hojaSopa(x.num, x.libros, x.sopa));
+  const hResp = sopas.map(x => S.hojaRespuestas(x.num, x.libros, x.sopa));
+  B.montarDefs();
+  const sel = document.getElementById('ver');
+  const q = new URLSearchParams(location.search).get('ver'); if (q) sel.value = q;
+  function dibujar() {
+    const v = sel.value;
+    const hojas = v === 'todo' ? hSopa.concat(hResp) : v === 'sopas' ? hSopa : v === 'resp' ? hResp : [hSopa[+v - 1], hResp[+v - 1]];
+    document.getElementById('hojas').innerHTML = hojas.join('');
+    document.documentElement.dataset.listo = '1';
+  }
+  sel.addEventListener('change', dibujar);
+  dibujar();
+  window.__sopas = sopas;
+})();
+</script>
+</body>
+</html>

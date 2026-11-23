@@ -17,7 +17,7 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
 <body>
 <header class="top"><div class="wrap">
   <a class="logo" href="index.html"><span class="lb"><i style="background:#4FA36B"></i><i style="background:#D9564A"></i><i style="background:#3E8ED0"></i></span>Biblioteca Bíblica 3D</a>
-  <nav class="nav"><a href="index.html" class="on">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="catalogo.html">Catálogo 3D</a><a href="#armar">Cómo armar</a></nav>
+  <nav class="nav"><a href="index.html" class="on">Biblioteca</a><a href="imprimir.html">Imprimir</a><a href="sopas.html">Sopas de letras</a><a href="loteria.html">Lotería</a><a href="catalogo.html">Catálogo 3D</a><a href="#armar">Cómo armar</a></nav>
 </div></header>
 
 <section class="hero"><div class="wrap">
@@ -42,6 +42,20 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
   <p class="muted" style="margin:4px 0 8px">Toca un libro para verlo en 3D, leer su cita y su dato curioso, o imprimirlo.</p>
   <div class="chips" id="chips"></div>
   <div class="librero" id="estantes"></div>
+</div></section>
+
+<section class="seccion" id="actividades" style="padding-bottom:0"><div class="wrap">
+  <h2>Más actividades para la clase</h2>
+  <div class="grid g2">
+    <a class="card" href="sopas.html" style="text-decoration:none;color:inherit;display:flex;gap:16px;align-items:center">
+      <span style="font-size:2.6rem" aria-hidden="true">🔎</span>
+      <span><b class="fred" style="font-size:1.2rem;color:var(--accent)">Sopas de letras</b><br>6 sopas con 11 libros seguidos cada una, y sus respuestas. 12 hojas carta.</span>
+    </a>
+    <a class="card" href="loteria.html" style="text-decoration:none;color:inherit;display:flex;gap:16px;align-items:center">
+      <span style="font-size:2.6rem" aria-hidden="true">🎴</span>
+      <span><b class="fred" style="font-size:1.2rem;color:var(--accent)">Lotería bíblica</b><br>66 cartas para cantar y 8 tablas de 16 libros, con pistas y textos para memorizar.</span>
+    </a>
+  </div>
 </div></section>
 
 <section class="seccion" id="armar"><div class="wrap">

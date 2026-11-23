@@ -17,7 +17,11 @@ Cada libro tiene:
 | `libro.html?n=27` | Visor 3D de cada libro (se gira con el dedo o el mouse), con su cita, su dato curioso y el botón para imprimirlo. |
 | `imprimir.html` | Imprime todos los libros, una sección, un rango o un solo libro, en hojas tamaño carta. |
 | `catalogo.html` | Catálogo con los 66 libros en 3D (frente y vuelta), listo para imprimir o guardar en PDF. |
+| `sopas.html` | 6 sopas de letras (11 libros seguidos en cada una) y sus 6 hojas de respuestas. |
+| `loteria.html` | Lotería bíblica: 66 cartas para cantar y 8 tablas de 16 libros. |
 | `descargas/biblioteca-biblica-3d-hojas.pdf` | Las 50 hojas del juego completo más la hoja de instrucciones, en PDF. |
+| `descargas/sopas-de-letras-66-libros.pdf` | Las 6 sopas de letras y sus respuestas (12 hojas). |
+| `descargas/loteria-biblica-cartas.pdf` y `loteria-biblica-tablas.pdf` | La lotería: instrucciones y cartas (12 hojas) y tablas (8 hojas). |
 
 ## Cómo imprimir y armar
 
