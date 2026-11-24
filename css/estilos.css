@@ -104,6 +104,7 @@ select,input[type=number]{font:inherit; padding:8px 10px; border-radius:10px; bo
 .resumen{font-family:Fredoka,sans-serif; font-size:1.2rem}
 .hojas{display:grid; gap:22px; justify-items:center; padding:24px 0 60px}
 .hojas svg.hoja{width:min(100%, 816px); height:auto; background:#fff; box-shadow:var(--shadow); display:block}
+.hojas svg.hoja.apaisada{width:min(100%, 1056px)}
 .aviso{background:#FFF4D6; border:1px solid #EED89A; border-radius:12px; padding:12px 14px; font-size:.95rem}
 
 /* ---------- catálogo (páginas carta) ---------- */
@@ -162,6 +163,7 @@ select,input[type=number]{font:inherit; padding:8px 10px; border-radius:10px; bo
 select{max-width:100%}
 .escena{touch-action:pan-y}
 @page{size:letter portrait; margin:0}
+@page apaisada{size:letter landscape; margin:0}
 @media print{
   body{background:#fff}
   .no-print,.top,.pie{display:none !important}
@@ -169,5 +171,6 @@ select{max-width:100%}
   #paginas{zoom:1 !important}
   .hojas{display:block; padding:0}
   .hojas svg.hoja{width:215.9mm; height:279.4mm; box-shadow:none; page-break-after:always; break-after:page}
+  .hojas svg.hoja.apaisada{width:279.4mm; height:215.9mm; page:apaisada}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
 }

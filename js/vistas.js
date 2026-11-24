@@ -169,11 +169,114 @@
     return hojaSVG(o);
   }
 
+  // ===================== PLANTILLA ARMABLE CON PESTAÑAS (opalina) =====================
+  // Hoja carta horizontal. Fila: pestaña | lomo | portada | canto | contraportada,
+  // con la tapa de arriba y la de abajo unidas a la portada.
+  const AW = 279.4, AH = 215.9, PT = 7;
+  const hojaSVGh = inner => `<svg class="hoja apaisada" viewBox="0 0 ${AW} ${AH}" xmlns="http://www.w3.org/2000/svg" font-family="${FONT}"><rect width="${AW}" height="${AH}" fill="#fff"/>${inner}</svg>`;
+  const CORTE_RED = `M0 0L${PT} ${-PT}H${30 - PT}L30 0V-30H130V0L${130 + PT} ${-PT}H${160 - PT}L160 0L${160 + PT} ${-PT}H${260 - PT}L260 0` +
+    `V130L${260 - PT} ${130 + PT}H${160 + PT}L160 130L${160 - PT} ${130 + PT}H${130 + PT}L130 130V160H30V130L${30 - PT} ${130 + PT}H${PT}L0 130L${-PT} ${130 - PT}V${PT}Z`;
+  const PESTANAS = [[0, 30], [130, 160], [160, 260]];
+  /** La plantilla de un libro; (0,0) es la esquina de arriba a la izquierda del lomo. */
+  function red(b, grosor) {
+    grosor = grosor || 1;
+    const pz = (kind, x, y) => `<g transform="translate(${x} ${y})"><g clip-path="url(#trim-${TRIM[kind]})">${B.pieza(kind, b)}</g></g>`;
+    let o = pz('lomo', 0, 0) + pz('portada', 30, 0) + pz('canto', 130, 0) + pz('contra', 160, 0) + pz('tapa', 30, -30) +
+      `<g transform="translate(30 160) scale(1 -1)"><g clip-path="url(#trim-top)">${B.pieza('tapa', b)}</g></g>`;
+    let tabs = '', txt = '';
+    PESTANAS.forEach(([a, z]) => {
+      tabs += `M${a} 0L${a + PT} ${-PT}H${z - PT}L${z} 0ZM${a} 130L${a + PT} ${130 + PT}H${z - PT}L${z} 130Z`;
+      txt += `<text x="${(a + z) / 2}" y="-2.6">PEGA</text><text x="${(a + z) / 2}" y="134.4">PEGA</text>`;
+    });
+    tabs += `M0 0L${-PT} ${PT}V${130 - PT}L0 130Z`;
+    txt += `<text transform="translate(-2.6 65) rotate(-90)">PEGA AQUÍ · VA POR DENTRO</text>`;
+    o += `<path d="${tabs}" fill="#D9DDE1"/><g font-size="2" font-weight="600" fill="#9AA0A6" text-anchor="middle" letter-spacing=".3">${txt}</g>`;
+    // dobleces (punteado) y corte (línea continua)
+    o += `<path d="M0 0H260M0 130H260M0 0V130M30 0V130M130 0V130M160 0V130" fill="none" stroke="#1E1E1E" stroke-opacity=".6" stroke-width="${N(.3 * grosor)}" stroke-dasharray="${N(1.1 * grosor)} ${N(1 * grosor)}"/>` +
+      `<path d="${CORTE_RED}" fill="none" stroke="#1E1E1E" stroke-width="${N(.35 * grosor)}" stroke-linejoin="round"/>`;
+    return o;
+  }
+  const muestra = (x, y, tipo) => tipo === 'corte' ? `<line x1="${x}" y1="${y}" x2="${x + 8}" y2="${y}" stroke="#1E1E1E" stroke-width=".4"/>`
+    : tipo === 'doblez' ? `<line x1="${x}" y1="${y}" x2="${x + 8}" y2="${y}" stroke="#1E1E1E" stroke-opacity=".7" stroke-width=".35" stroke-dasharray="1.1 1"/>`
+      : `<path d="M${x} ${y + 1.6}L${x + 1.6} ${y - 1.6}H${x + 6.4}L${x + 8} ${y + 1.6}Z" fill="#D9DDE1"/>`;
+
+  /** Una hoja horizontal con la plantilla de un libro, lista para recortar, doblar y pegar. */
+  function hojaArmable(b, pie) {
+    const G = B.GRUPOS[b.g], ox = (AW - 260 - PT) / 2 + PT, oy = (AH - 190) / 2 + 30;
+    const name = up(b.nombre), nfs = Math.min(8, 118 / B.tw(name, 1, .1));
+    const tx = ox + 134, ty = oy + 130 + PT + 5;
+    let o = `<g transform="translate(${N(ox)} ${N(oy)})">${red(b)}</g>`;
+    o += `<text x="${N(tx)}" y="${N(oy - 23)}" font-size="2.5" font-weight="600" fill="#9a8e8a" letter-spacing=".3">LIBRO ${b.n} DE 66 · ${G.t === 'AT' ? 'ANTIGUO' : 'NUEVO'} TESTAMENTO · ${esc(up(G.nombre))}</text>` +
+      `<text x="${N(tx)}" y="${N(oy - 13.5)}" font-size="${N(nfs)}" font-weight="700" fill="${G.osc}" letter-spacing=".1">${esc(name)}</text>`;
+    const pasos = [
+      ['corte', 'Recorta por la línea continua, con todo y pestañas.'],
+      ['doblez', 'Marca y dobla hacia adentro las líneas punteadas.'],
+      ['pega', 'Pon pegamento en las pestañas grises: van por dentro.'],
+      [null, 'Pega primero la pestaña larga del lomo y al final cierra las tapas.']
+    ];
+    pasos.forEach(([t, s], i) => {
+      const y = ty + i * 5;
+      o += (t ? muestra(tx, y - 1, t) : '') + `<text x="${N(tx + 10)}" y="${N(y)}" font-size="2.9" fill="#3d3d3d"><tspan font-weight="700" fill="${G.osc}">${i + 1}.</tspan> ${esc(s)}</text>`;
+    });
+    o += regla(tx, ty + 22) + tijera(ox - 6, oy - 9) +
+      `<text x="${N(ox - PT)}" y="${N(oy + 130 + 30)}" font-size="2.3" fill="#9a9a9a">10 × 13 × 3 cm</text>` +
+      `<text x="${N(ox - PT)}" y="${N(oy + 130 + 34)}" font-size="2.3" fill="#9a9a9a">Citas: RVR1960</text>` +
+      `<text x="${AW / 2}" y="5.4" text-anchor="middle" font-size="2.2" fill="#9a9a9a" letter-spacing=".25">${esc(pie)}</text>`;
+    return hojaSVGh(o);
+  }
+
+  /** Hoja de instrucciones (horizontal) para los libros armables. */
+  function hojaInstrArmable(resumen) {
+    const G = B.GRUPOS.may, ej = B.porNumero(1);
+    const li = (x, y, t) => `<text x="${x}" y="${N(y)}" font-size="3.2" fill="#3d3d3d">• ${esc(t)}</text>`;
+    let o = `<rect x="10" y="10" width="${AW - 20}" height="${N(AH - 20)}" rx="6" fill="none" stroke="#E6D6CE" stroke-width=".5"/>` +
+      `<text x="20" y="28" font-size="10" font-weight="700" fill="#8E2E25">Biblioteca Bíblica 3D</text>` +
+      `<text x="20" y="36" font-size="4" fill="#5f5f5f">66 libros de la Biblia para recortar, doblar y pegar · cada libro mide 10 × 13 × 3 cm</text>` +
+      `<text x="20" y="50" font-size="4.6" font-weight="700" fill="#3d3d3d">Materiales</text>` +
+      ['Estas hojas impresas en opalina tamaño carta (180–225 g).', 'Impresas en horizontal, al 100 % (tamaño real).', 'Tijeras, regla y una pluma sin tinta para marcar los dobleces.', 'Lápiz adhesivo, pegamento blanco o cinta doble cara.']
+        .map((t, i) => li(22, 57 + i * 5.2, t)).join('') +
+      `<text x="20" y="86" font-size="4.6" font-weight="700" fill="#3d3d3d">Paso a paso</text>`;
+    const pasos = ['Recorta por la línea continua ✂, con todo y pestañas.', 'Con la regla, repasa cada línea punteada con la pluma sin tinta.',
+      'Dobla hacia adentro por todas las líneas punteadas.', 'Pega la pestaña larga del lomo por dentro de la contraportada.',
+      'Dobla las pestañas de arriba hacia adentro y cierra la tapa sobre ellas.', 'Haz lo mismo abajo. ¡Tu libro está listo!'];
+    pasos.forEach((t, i) => { o += `<text x="22" y="${N(93 + i * 5.4)}" font-size="3.2" fill="#3d3d3d"><tspan font-weight="700" fill="${G.osc}">${i + 1}.</tspan> ${esc(t)}</text>`; });
+    o += `<text x="22" y="${N(93 + 6 * 5.4 + 2)}" font-size="2.9" fill="#6f6f6f" font-style="italic">Consejo: para que quede más firme, rellénalo con cartón o unicel antes de cerrar la última tapa.</text>` +
+      `<text x="20" y="144" font-size="4.6" font-weight="700" fill="#3d3d3d">Las hojas</text>` + resumen.map((t, i) => li(22, 151 + i * 5.2, t)).join('') +
+      `<text x="20" y="175" font-size="4.6" font-weight="700" fill="#3d3d3d">Las líneas</text>` +
+      muestra(22, 181, 'corte') + `<text x="33" y="182" font-size="3.2" fill="#3d3d3d">Continua: recortar</text>` +
+      muestra(76, 181, 'doblez') + `<text x="87" y="182" font-size="3.2" fill="#3d3d3d">Punteada: doblar</text>` +
+      muestra(22, 188, 'pega') + `<text x="33" y="189" font-size="3.2" fill="#3d3d3d">Gris: pestaña para pegar (va por dentro)</text>` +
+      regla(22, 199);
+    // plantilla de ejemplo y libro terminado
+    const k = .4;
+    o += `<text x="158" y="50" font-size="3.4" font-weight="700" fill="#3d3d3d">Así es la plantilla de cada libro</text>` +
+      `<g transform="translate(${N(158 + PT * k)} ${N(56 + 30 * k)}) scale(${k})">${red(ej, 2)}</g>` +
+      `<g font-size="2.6" fill="#5f5f5f"><text x="${N(158 + (PT + 15) * k)}" y="${N(56 + 30 * k + 130 * k + 13)}" text-anchor="middle">lomo</text>` +
+      `<text x="${N(158 + (PT + 80) * k)}" y="${N(56 + 30 * k + 130 * k + 18)}" text-anchor="middle">portada</text>` +
+      `<text x="${N(158 + (PT + 145) * k)}" y="${N(56 + 30 * k + 130 * k + 13)}" text-anchor="middle">canto</text>` +
+      `<text x="${N(158 + (PT + 210) * k)}" y="${N(56 + 30 * k + 130 * k + 13)}" text-anchor="middle">contraportada</text>` +
+      `<text x="${N(158 + (PT + 80) * k)}" y="54" text-anchor="middle">tapa de arriba</text></g>` +
+      `<text x="158" y="146" font-size="3.4" font-weight="700" fill="#3d3d3d">Colores por sección</text>`;
+    B.ORDEN.forEach((id, i) => {
+      const g = B.GRUPOS[id], x = 158 + (i % 2) * 38, y = 154 + Math.floor(i / 2) * 8;
+      o += `<rect x="${x}" y="${y - 3.6}" width="5" height="5" rx="1.2" fill="${g.base}"/><text x="${x + 7}" y="${y}" font-size="2.6" fill="#3d3d3d">${esc(g.nombre)}</text>`;
+    });
+    o += `<g transform="translate(236 140) scale(.27)">${libro3D(ej, 'frente')}</g>` +
+      `<text x="${AW - 20}" y="${N(AH - 14)}" font-size="2.4" fill="#9a9a9a" text-anchor="end">Citas: Reina-Valera 1960</text>`;
+    return hojaSVGh(o);
+  }
+
   // ===================== PLANES DE IMPRESIÓN =====================
   function trozos(arr, n) { const out = []; for (let i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out; }
-  /** modo: 'ahorro' (portadas + tiras), 'basico' (portadas + lomos), 'kit' (un libro por hoja). */
+  /** modo: 'armable' (plantilla con pestañas, un libro por hoja horizontal), y para madera:
+      'ahorro' (portadas + tiras), 'basico' (portadas + lomos), 'kit' (un libro por hoja). */
   function plan(libros, modo, instrucciones) {
     const hojas = [];
+    if (modo === 'armable') {
+      libros.forEach(b => hojas.push(['armable', [b]]));
+      if (instrucciones) hojas.unshift(['instr-armable', [`${libros.length} ${libros.length === 1 ? 'hoja' : 'hojas'}: una por libro, con su plantilla completa.`, 'Cada hoja trae también su propio paso a paso.']]);
+      return hojas;
+    }
     if (modo === 'kit') libros.forEach(b => hojas.push(['kit', [b]]));
     else if (modo === 'basico') trozos(libros, 12).forEach(grupo => { trozos(grupo, 2).forEach(par => hojas.push(['portadas', par])); hojas.push(['lomos', grupo]); });
     else trozos(libros, 4).forEach(grupo => { trozos(grupo, 2).forEach(par => hojas.push(['portadas', par])); hojas.push(['tiras', grupo]); });
@@ -191,6 +294,8 @@
     const pie = `BIBLIOTECA BÍBLICA 3D · HOJA ${i + 1} DE ${total}`;
     switch (h[0]) {
       case 'instrucciones': return hojaInstrucciones(h[1]);
+      case 'instr-armable': return hojaInstrArmable(h[1]);
+      case 'armable': return hojaArmable(h[1][0], `${pie} · ${up(h[1][0].nombre)}`);
       case 'portadas': return hojaPortadas(h[1], `${pie} · PORTADAS · ${up(nom(h[1]))}`);
       case 'tiras': return hojaTiras(h[1], `${pie} · LOMO, CANTO Y TAPA · LIBROS ${h[1][0].n}–${h[1][h[1].length - 1].n}`);
       case 'lomos': return hojaLomos(h[1], `${pie} · LOMOS · LIBROS ${h[1][0].n}–${h[1][h[1].length - 1].n}`);
@@ -198,5 +303,5 @@
     }
   }
 
-  root.Vistas = { libro3D, svg3D, VB3D, plan, render, hojaKit, hojaInstrucciones };
+  root.Vistas = { libro3D, svg3D, VB3D, plan, render, hojaKit, hojaInstrucciones, hojaArmable, hojaInstrArmable };
 })(window);

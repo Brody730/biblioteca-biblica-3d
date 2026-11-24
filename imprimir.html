@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Imprimir · Biblioteca Bíblica 3D</title>
-<meta name="description" content="Imprime gratis las piezas de los 66 libros de la Biblia en hojas tamaño carta, listas para recortar y pegar en madera.">
+<meta name="description" content="Imprime gratis los 66 libros de la Biblia en hojas tamaño carta, listos para recortar, doblar y armar con pestañas.">
 <link rel="icon" href="img/icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/estilos.css?v=2">
+<link rel="stylesheet" href="css/estilos.css?v=3">
 <script>/* pide la letra de inmediato (también para generar PDF) */
 if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
 </head>
@@ -20,14 +20,16 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
 
 <main class="wrap">
   <section class="card no-print" style="margin-top:22px">
-    <h1 style="font-size:2rem">Imprimir las piezas</h1>
-    <p class="muted">Elige qué quieres imprimir. Todo es gratuito. Las hojas son tamaño <b>carta</b> y las piezas salen en <b>tamaño real</b> para bloques de madera de 10 × 13 × 3 cm.</p>
+    <h1 style="font-size:2rem">Imprimir los libros</h1>
+    <p class="muted">Elige qué quieres imprimir. Todo es gratuito. Las hojas son tamaño <b>carta</b> y cada libro armado mide <b>10 × 13 × 3 cm</b> (tamaño real).</p>
     <div class="panel-imp">
       <div>
         <h3>1. Tipo de hojas</h3>
-        <label class="opcion"><input type="radio" name="modo" value="ahorro" checked><span><b>Juego completo, ahorrando papel</b><br><small>Portada, contraportada, lomo, canto y tapa. 66 libros = 50 hojas.</small></span></label>
+        <label class="opcion"><input type="radio" name="modo" value="armable" checked><span><b>Para armar con pestañas (opalina)</b><br><small>Plantilla para recortar, doblar y pegar. Un libro por hoja horizontal: 66 libros = 66 hojas.</small></span></label>
+        <p class="muted" style="margin:14px 0 6px;font-size:.9rem">Para pegar sobre bloques de madera:</p>
+        <label class="opcion"><input type="radio" name="modo" value="ahorro"><span><b>Piezas sueltas, ahorrando papel</b><br><small>Portada, contraportada, lomo, canto y tapa. 66 libros = 50 hojas.</small></span></label>
         <label class="opcion" style="margin-top:8px"><input type="radio" name="modo" value="basico"><span><b>Solo portada, contraportada y lomo</b><br><small>El canto y la tapa se pintan. 66 libros = 39 hojas.</small></span></label>
-        <label class="opcion" style="margin-top:8px"><input type="radio" name="modo" value="kit"><span><b>Un libro por hoja</b><br><small>Cada hoja trae todas las piezas de un libro y sus instrucciones.</small></span></label>
+        <label class="opcion" style="margin-top:8px"><input type="radio" name="modo" value="kit"><span><b>Piezas sueltas, un libro por hoja</b><br><small>Cada hoja trae todas las piezas de un libro y sus instrucciones.</small></span></label>
       </div>
       <div>
         <h3>2. ¿Qué libros?</h3>
@@ -41,10 +43,11 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
         <h3>3. Imprimir</h3>
         <p class="resumen" id="resumen">—</p>
         <button class="btn" onclick="window.print()">🖨️ Imprimir estas hojas</button>
-        <p style="margin-top:10px"><a class="btn sec sm" href="descargas/biblioteca-biblica-3d-hojas.pdf" download>⬇ PDF con las 50 hojas</a></p>
+        <p style="margin-top:10px"><a class="btn sec sm" href="descargas/biblioteca-biblica-3d-armable.pdf" download>⬇ PDF para armar (67 hojas)</a></p>
+        <p style="margin-top:6px"><a class="btn sec sm" href="descargas/biblioteca-biblica-3d-hojas.pdf" download>⬇ PDF piezas para madera (51 hojas)</a></p>
       </div>
     </div>
-    <p class="aviso" style="margin-top:16px">Al imprimir elige: tamaño <b>Carta</b>, escala <b>100 % / Tamaño real</b> (no “Ajustar”), márgenes <b>Ninguno</b> y activa <b>Gráficos de fondo</b>. Cada hoja de instrucciones trae una regla de 5 cm para comprobar la escala. Para pegar sobre madera conviene <b>papel bond de 90–120 g</b> o <b>papel adhesivo imprimible</b>.</p>
+    <p class="aviso" style="margin-top:16px">Al imprimir elige: tamaño <b>Carta</b>, escala <b>100 % / Tamaño real</b> (no “Ajustar”), márgenes <b>Ninguno</b> y activa <b>Gráficos de fondo</b>. Las hojas para armar salen en <b>horizontal</b>; imprímelas en <b>opalina de 180–225 g</b>. Cada hoja trae una regla de 5 cm para comprobar la escala. Para pegar sobre madera conviene <b>papel bond de 90–120 g</b> o <b>papel adhesivo imprimible</b>.</p>
   </section>
   <div class="hojas" id="hojas"></div>
 </main>
@@ -53,7 +56,7 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
 <script src="js/piezas.js"></script>
 <script src="js/libros-at.js"></script>
 <script src="js/libros-nt.js"></script>
-<script src="js/vistas.js"></script>
+<script src="js/vistas.js?v=3"></script>
 <script>
 (function () {
   const B = Biblioteca, V = Vistas;

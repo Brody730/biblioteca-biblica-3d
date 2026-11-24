@@ -1,13 +1,13 @@
 # Biblioteca Bíblica 3D
 
-Recurso **gratuito** para apoyar al ministerio infantil: los **66 libros de la Biblia** para ver en 3D, imprimir y pegar sobre bloques de madera, hasta formar una biblioteca bíblica de verdad.
+Recurso **gratuito** para apoyar al ministerio infantil: los **66 libros de la Biblia** para ver en 3D, imprimir en opalina, recortar, doblar y armar con pestañas, hasta formar una biblioteca bíblica de verdad.
 
 Cada libro tiene:
 
 - un **dibujo propio** (isotipo) con volumen y sombras, relacionado con su historia;
 - una **cita bíblica** (Reina-Valera 1960);
 - un **dato curioso** para los niños;
-- cinco piezas para armar: **portada (A)**, **contraportada (B)**, **lomo (C)**, **canto de hojas (D)** y **tapa (E)**.
+- una **plantilla para armar** con pestañas: portada, contraportada, lomo, canto de hojas y tapas de arriba y abajo, en una hoja carta horizontal.
 
 ## Qué trae la página
 
@@ -19,22 +19,25 @@ Cada libro tiene:
 | `catalogo.html` | Catálogo con los 66 libros en 3D (frente y vuelta), listo para imprimir o guardar en PDF. |
 | `sopas.html` | 6 sopas de letras (11 libros seguidos en cada una) y sus 6 hojas de respuestas. |
 | `loteria.html` | Lotería bíblica: 66 cartas para cantar y 8 tablas de 16 libros. |
-| `descargas/biblioteca-biblica-3d-hojas.pdf` | Las 50 hojas del juego completo más la hoja de instrucciones, en PDF. |
+| `descargas/biblioteca-biblica-3d-armable.pdf` | Las 66 plantillas para armar con pestañas más la hoja de instrucciones (67 hojas). |
+| `descargas/biblioteca-biblica-3d-hojas.pdf` | Piezas sueltas para pegar sobre bloques de madera (50 hojas + instrucciones). |
 | `descargas/sopas-de-letras-66-libros.pdf` | Las 6 sopas de letras y sus respuestas (12 hojas). |
 | `descargas/loteria-biblica-cartas.pdf` y `loteria-biblica-tablas.pdf` | La lotería: instrucciones y cartas (12 hojas) y tablas (8 hojas). |
 
 ## Cómo imprimir y armar
 
-1. Imprime en hojas **carta**, escala **100 % (tamaño real)**, márgenes **ninguno** y con **gráficos de fondo** activados. La hoja de instrucciones trae una regla de 5 cm para comprobar la escala.
-2. Usa **papel bond de 90–120 g** o **papel adhesivo imprimible**.
-3. Recorta por la **línea punteada**. La pestaña gris solo indica la pieza (A–E) y se recorta.
-4. Pega sobre un **bloque de madera de 10 × 13 × 3 cm**: A al frente, B atrás, C a la izquierda, D a la derecha y E arriba.
+1. Imprime en **opalina carta de 180–225 g**, en **horizontal**, escala **100 % (tamaño real)**, márgenes **ninguno** y con **gráficos de fondo** activados. Cada hoja trae una regla de 5 cm para comprobar la escala.
+2. Recorta por la **línea continua**, con todo y las pestañas grises.
+3. Dobla hacia adentro por las **líneas punteadas** (repasarlas antes con una pluma sin tinta ayuda).
+4. Pega la pestaña larga del lomo por dentro de la contraportada; luego dobla las pestañas de arriba y de abajo y cierra las tapas sobre ellas.
+
+Cada libro armado mide **10 × 13 × 3 cm**.
 
 | Opción | Hojas para los 66 libros |
 |---|---|
-| Juego completo (A, B, C, D y E) | 50 hojas (+1 de instrucciones) |
-| Solo portada, contraportada y lomo | 39 hojas (+1 de instrucciones) |
-| Un libro por hoja, con instrucciones | 1 hoja por libro |
+| Para armar con pestañas (opalina) | 66 hojas (+1 de instrucciones) |
+| Piezas sueltas para madera, ahorrando papel | 50 hojas (+1 de instrucciones) |
+| Piezas sueltas para madera: portada, contraportada y lomo | 39 hojas (+1 de instrucciones) |
 
 ## Publicarlo en GitHub Pages
 

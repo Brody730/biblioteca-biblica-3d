@@ -8,7 +8,7 @@
 <link rel="icon" href="img/icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/estilos.css?v=2">
+<link rel="stylesheet" href="css/estilos.css?v=3">
 <script>/* pide la letra de inmediato (también para generar PDF) */
 if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + ' 16px Fredoka'));</script>
 </head>
@@ -47,7 +47,7 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
 <script src="js/piezas.js"></script>
 <script src="js/libros-at.js"></script>
 <script src="js/libros-nt.js"></script>
-<script src="js/vistas.js"></script>
+<script src="js/vistas.js?v=3"></script>
 <script>
 (function () {
   const B = Biblioteca, esc = B.esc;
@@ -73,7 +73,7 @@ if (document.fonts) ['500', '600', '700'].forEach(w => document.fonts.load(w + '
     <h3 style="margin-top:18px">El dibujo</h3>
     <p>${esc(b.iso)}</p>
     <p style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
-      <a class="btn" href="imprimir.html?modo=kit&alcance=libro:${b.n}">🖨️ Imprimir este libro</a>
+      <a class="btn" href="imprimir.html?modo=armable&alcance=libro:${b.n}&instrucciones=0">🖨️ Imprimir este libro</a>
       <a class="btn sec" href="imprimir.html?alcance=sec:${b.g}">Imprimir la sección</a>
     </p>`;
 
